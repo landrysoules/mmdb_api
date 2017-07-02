@@ -1,24 +1,23 @@
 module WebScraping
+  require 'open-uri'
   class WebScrapingService
+    def initialize
+      @base_url_imdb = 'http://www.imdb.com'
+    end
+
     def search(query)
-      Wombat.crawl do
-        base_url 'http://www.imdb.com'
-        path '/find?ref_=nv_sr_fn&q=the+big+lebowski&s=all'
-        what_is({ css: '#main > div > div:nth-child(3) > table'}, :list)
-        # headline xpath: '//h1'
-        # subheading css: 'p.alt-lead'
-        #
-        # what_is({ css: '.one-fourth h4' }, :list)
-        #
-        # links do
-        #   explore xpath: '/html/body/header/div/div/nav[1]/a[4]' do |e|
-        #     e.gsub(/Explore/, 'Love')
-        #   end
-        #
-        #   features css: '.nav-item-opensource'
-        #   business css: '.nav-item-business'
-        # end
+      movies = []
+      formatted_query = CGI.escape query
+      doc = Nokogiri::HTML(
+        open("#{@base_url_imdb}/find?ref_=nv_sr_fn&q=#{formatted_query}&s=all")
+      )
+      table = doc.xpath('//*[@id="main"]/div/div[2]/table')
+      table.search('tr').each do |tr|
+        cells = tr.search('td')
+        link = cells[1].first_element_child
+        movies << { name: link.children[0].text, link: link['href'] }
       end
+      movies
     end
   end
 end
