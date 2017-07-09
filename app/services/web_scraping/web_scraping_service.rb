@@ -1,5 +1,5 @@
+require 'open-uri'
 module WebScraping
-  require 'open-uri'
   class WebScrapingService
     def initialize
       @base_url_imdb = 'http://www.imdb.com'
