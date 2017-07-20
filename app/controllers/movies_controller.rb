@@ -1,22 +1,27 @@
 class MoviesController < ApplicationController
-
   def initialize
-    @wsservice = WebScraping::WebScrapingService.new
+    @ws_service = WebScraping::WebScrapingService.new
+    @util_service = Common::UtilService.new
   end
 
   def index
-    @movies = Movie.all
-    json_response(@movies, :ok)
+    @local_movies = Movie.all
+    render json: @local_movies
   end
 
-  def search()
-    @movies = @wsservice.search(params['request'])
-    json_response(@movies, :ok)
+  def search
+    request = params['request']
+    @local_movies = Movie.where(name: /#{request}/i).entries
+    @imdb_movies = @ws_service.search(request)
+    render json: {
+      local_movies: @local_movies,
+      imdb_movies: @util_service.filter_results(request, @imdb_movies)
+    }
   end
 
   def create
     @movie = Movie.create!(movies_params)
-    json_response(@movie, :created)
+    render json: @movie, status: :created
   end
 
   private

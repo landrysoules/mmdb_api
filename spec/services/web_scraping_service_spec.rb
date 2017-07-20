@@ -4,7 +4,7 @@ describe 'WebScrapingService' do
   before(:each) do
     @web_scraping_service = WebScraping::WebScrapingService.new
   end
-  describe 'search' do
+  describe '#search' do
     context 'when multiple results' do
       it 'returns multiple choices' do
         VCR.use_cassette 'imdb/search_multiple_results' do
@@ -33,6 +33,28 @@ describe 'WebScrapingService' do
             )
         end
       end
+    end
+    context 'when results both local and imdb' do
+      it 'returns results from both sources' do
+        movie = create :pusher
+        Rails.logger.debug "movie: #{movie.inspect}"
+        Rails.logger.debug "movies from db: #{Movie.first.inspect}"
+        mmdb_results = Movie.where(name: /.*pusher.*/i).all.to_a
+        Rails.logger.debug "mmdb_results: #{mmdb_results.inspect}"
+        imdb_results = @web_scraping_service.search('pusher')
+        Rails.logger.debug "imdb_results: #{imdb_results.inspect}"
+        mmdb_results << imdb_results
+        puts mmdb_results.inspect
+      end
+      it 'returns only imdb results with name not in mmdb_results' do
+
+      end
+    end
+    context 'when results only imdb' do
+
+    end
+    context 'when results only mmdb' do
+
     end
   end
 end
