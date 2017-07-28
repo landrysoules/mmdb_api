@@ -1,6 +1,6 @@
 # README  
 
-[![Build Status](https://travis-ci.org/landrysoules/mmdb_api.svg?branch=master)](https://travis-ci.org/landrysoules/mmdb_api)  
+[![Build Status](https://semaphoreci.com/api/v1/landry/mmdb_api/branches/master/shields_badge.svg)](https://semaphoreci.com/landry/mmdb_api)
 
 mmdb stands for My Movie DataBase, my attempt to make a (light !) clone of IMDB as a SPA.  
 This project is only done on my spare time, for educational purpose.  
