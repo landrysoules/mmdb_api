@@ -13,10 +13,17 @@ describe 'UtilService' do
       end
     end
     context '1 movie already present' do
-      it 'returns unchanged list' do
+      it 'returns list with this movie removed' do
         expect(@util_service
-        .filter_results('Rambo', @remote_list))
+        .filter_results([{ name: 'Rambo' }], @remote_list))
           .to eq [{ name: 'Platoon' }, { name: 'Cocoon' }]
+      end
+    end
+    context '0 movie already present' do
+      it 'returns list unchanged' do
+        expect(@util_service
+        .filter_results([], @remote_list))
+          .to eq [{ name: 'Rambo' }, { name: 'Platoon' }, { name: 'Cocoon' }]
       end
     end
   end

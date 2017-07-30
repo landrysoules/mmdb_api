@@ -31,6 +31,7 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'database_cleaner', '~> 1.5.3'
   gem 'factory_girl_rails'
+  gem 'fuubar'
   gem 'rspec-rails', '~> 3.5'
   gem 'vcr'
   gem 'webmock'
