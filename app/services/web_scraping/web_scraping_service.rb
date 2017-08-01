@@ -24,5 +24,18 @@ module WebScraping
       Rails.logger.info("movies: #{movies.inspect}")
       movies
     end
+
+    def import_movie(url)
+      doc = Nokogiri::HTML(
+        open("#{@base_url_imdb}/#{url}")
+      )
+      name_year = doc.css("h1[itemprop='name']").text
+      /(?<name>.+)\((?<year>.+)\)/ =~ name_year
+      # p name
+      name = name.gsub("\u00A0", ' ').strip
+      Movie.create!(name: name, year: year)
+    end
+
+
   end
 end

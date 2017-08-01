@@ -66,4 +66,19 @@ describe 'WebScrapingService' do
 
     end
   end
+
+  describe '#import_movie' do
+    context 'everything is ok' do
+      it 'imports movie into database' do
+        VCR.use_cassette 'imdb/movie_detail' do
+          @web_scraping_service.import_movie(
+            'title/tt0118715/?ref_=fn_al_tt_1'
+          )
+          @local_results = Movie.where(name: /The Big Lebowski/i).entries
+          @local_movie = @local_results.first
+          expect(@local_movie.name).to eq('The Big Lebowski')
+        end
+      end
+    end
+  end
 end

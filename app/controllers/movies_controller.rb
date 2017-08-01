@@ -20,6 +20,10 @@ class MoviesController < ApplicationController
     }
   end
 
+  def importMovie
+    request = params['request']
+  end
+
   def create
     @movie = Movie.create!(movies_params)
     render json: @movie, status: :created
