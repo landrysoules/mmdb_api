@@ -20,8 +20,9 @@ class MoviesController < ApplicationController
     }
   end
 
-  def importMovie
+  def import
     request = params['request']
+    render json: @ws_service.import_movie(request), status: :created
   end
 
   def create

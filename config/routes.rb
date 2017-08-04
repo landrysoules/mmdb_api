@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :movies do
       collection do
         get 'search'
+        get 'import'
       end
     end
   end

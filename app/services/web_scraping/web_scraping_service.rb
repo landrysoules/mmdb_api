@@ -32,10 +32,8 @@ module WebScraping
       name_year = doc.css("h1[itemprop='name']").text
       /(?<name>.+)\((?<year>.+)\)/ =~ name_year
       # p name
-      name = name.gsub("\u00A0", ' ').strip
+      name = name.tr("\u00A0", ' ').strip
       Movie.create!(name: name, year: year)
     end
-
-
   end
 end
