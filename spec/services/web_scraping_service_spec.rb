@@ -56,14 +56,11 @@ describe 'WebScrapingService' do
         puts mmdb_results.inspect
       end
       it 'returns only imdb results with name not in mmdb_results' do
-
       end
     end
     context 'when results only imdb' do
-
     end
     context 'when results only mmdb' do
-
     end
   end
 
@@ -77,6 +74,47 @@ describe 'WebScrapingService' do
           @local_results = Movie.where(name: /The Big Lebowski/i).entries
           @local_movie = @local_results.first
           expect(@local_movie.name).to eq('The Big Lebowski')
+        end
+      end
+    end
+  end
+
+  describe '#compose_movie_card' do
+    context 'TV series' do
+      context 'everything goes fine' do
+        it 'creates a movie card' do
+          VCR.use_cassette 'imdb/movie_card_series' do
+            movie_card = @web_scraping_service.compose_movie_card(
+              'title/tt0290978/?ref_=nv_sr_2'
+            )
+            expect(movie_card[:name]).to eq('The Office')
+            expect(movie_card[:image_url]).to eq(
+              'https://images-na.ssl-images-amazon.com/images/M/MV5BMTQwOTA3M' \
+              'DA4MV5BMl5BanBnXkFtZTcwNDA3MzgyMQ@@._V1._CR28,1,321,451_UY268_' \
+              'CR4,0,182,268_AL_.jpg'
+            )
+            expect(movie_card[:summary]).to eq(
+              'The story of an office that faces closure when the company dec' \
+              'ides to downsize its branches. A documentary film crew follow ' \
+              'staff and the manager David Brent as they continue their daily' \
+              ' lives.'
+            )
+            expect(movie_card[:imdb_url]).to eq(
+              'http://www.imdb.com/title/tt0290978/?ref_=nv_sr_2'
+            )
+          end
+        end
+      end
+    end
+    context 'movie' do
+      context 'everything goes fine' do
+        it 'creates a movie card' do
+          VCR.use_cassette 'imdb/movie_card_movie' do
+            movie_card = @web_scraping_service.compose_movie_card(
+              'title/tt0118715/?ref_=fn_al_tt_1'
+            )
+            expect(movie_card[:name]).to eq('The Big Lebowski')
+          end
         end
       end
     end
