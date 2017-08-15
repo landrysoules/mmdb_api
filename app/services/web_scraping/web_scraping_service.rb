@@ -40,10 +40,14 @@ module WebScraping
       doc = Nokogiri::HTML(
         open(imdb_url)
       )
-      if doc.css('span#titleYear').present?
-        compose_movie_card_movie(doc, imdb_url)
-      else
-        compose_movie_card_series(doc, imdb_url)
+      begin
+        if doc.css('span#titleYear').present?
+          compose_movie_card_movie(doc, imdb_url)
+        else
+          compose_movie_card_series(doc, imdb_url)
+        end
+      rescue => e
+        Rails.logger.error "Error for url #{url}: #{e.message} | #{e.backtrace}"
       end
     end
 
