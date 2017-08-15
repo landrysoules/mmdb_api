@@ -15,7 +15,6 @@ class MoviesController < ApplicationController
     @imdb_movies = @ws_service.search(request)
     render json: {
       local_movies: @local_movies,
-      # imdb_movies: @imdb_movies
       imdb_movies: @util_service.filter_results(@local_movies, @imdb_movies)
     }
   end
