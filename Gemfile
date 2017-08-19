@@ -32,7 +32,7 @@ group :development, :test do
   gem 'database_cleaner', '~> 1.5.3'
   gem 'factory_girl_rails'
   gem 'fuubar'
-  gem 'rspec-rails', '~> 3.5'
+  gem 'rspec-rails', '~> 3.6'
   gem 'vcr'
   gem 'webmock'
 end
