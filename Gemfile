@@ -33,6 +33,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'fuubar'
   gem 'rspec-rails', '~> 3.6'
+  gem 'simplecov', :require => false
   gem 'vcr'
   gem 'webmock'
 end

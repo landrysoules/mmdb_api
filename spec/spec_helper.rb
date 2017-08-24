@@ -13,6 +13,8 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require 'simplecov'
+SimpleCov.start
 require 'webmock/rspec'
 require 'factory_girl_rails'
 require 'database_cleaner'
