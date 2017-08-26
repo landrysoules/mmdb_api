@@ -47,13 +47,15 @@ module WebScraping
           compose_movie_card_series(doc, imdb_url)
         end
       rescue => e
-        Rails.logger.error "Error for url #{url}: #{e.message} | #{e.backtrace}"
+        Rails.logger.error "Error for url #{url}: #{e.message} | " \
+        "#{e.backtrace.join "\n"}"
       end
     end
 
     private
 
     def compose_movie_card_movie(doc, imdb_url)
+      byebug
       name_year = retrieve_name_year(doc.css("h1[itemprop='name']").text)
       image_url = doc.css('div.poster img').attr('src').value
       summary = doc.css('div.summary_text').text.tr("\u00A0", ' ').strip
