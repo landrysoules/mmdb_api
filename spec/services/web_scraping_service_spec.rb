@@ -38,6 +38,12 @@ describe 'WebScrapingService' do
             )
         end
       end
+      context 'when results from different types' do
+        it 'handles correctly different types' do
+          VCR.use_cassette 'imdb/search_different_types' do
+          end
+        end
+      end
     end
     context 'when results both local and imdb' do
       it 'returns results from both sources' do
@@ -111,6 +117,28 @@ describe 'WebScrapingService' do
             )
             expect(movie_card[:name]).to eq('The Big Lebowski')
           end
+        end
+      end
+    end
+  end
+  describe '#item_type' do
+    context 'type is movie' do
+      it 'returns correct type movie' do
+        VCR.use_cassette 'imdb/movie_rambo' do
+          doc = Nokogiri::HTML(
+            open('http://www.imdb.com/title/tt0462499/?ref_=nv_sr_1')
+          )
+          expect(@web_scraping_service.send(:item_type, doc)).to eql 'movie'
+        end
+      end
+    end
+    context 'type is series' do
+      it 'returns correct type series' do
+        VCR.use_cassette 'imdb/series_modern_family' do
+          doc = Nokogiri::HTML(
+            open('http://www.imdb.com/title/tt1442437/?ref_=fn_al_tt_1')
+          )
+          expect(@web_scraping_service.send(:item_type, doc)).to eql 'series'
         end
       end
     end

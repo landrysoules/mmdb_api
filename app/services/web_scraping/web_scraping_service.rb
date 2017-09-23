@@ -41,9 +41,10 @@ module WebScraping
         open(imdb_url)
       )
       begin
-        if doc.css('span#titleYear').present?
+        case item_type(doc)
+        when 'movie'
           compose_movie_card_movie(doc, imdb_url)
-        else
+        when 'series'
           compose_movie_card_series(doc, imdb_url)
         end
       rescue => e
@@ -55,7 +56,7 @@ module WebScraping
     private
 
     def compose_movie_card_movie(doc, imdb_url)
-      byebug
+      # byebug
       name_year = retrieve_name_year(doc.css("h1[itemprop='name']").text)
       image_url = doc.css('div.poster img').attr('src').value
       summary = doc.css('div.summary_text').text.tr("\u00A0", ' ').strip
@@ -85,6 +86,16 @@ module WebScraping
       /(?<name>.+)\((?<year>.+)\)/ =~ text
       name = name.tr("\u00A0", ' ').strip
       { name: name, year: year }
+    end
+
+    def item_type(doc)
+      ref_string = doc.css('div.subtext')
+      if ref_string.present?
+        if ref_string.text =~ /tv series/i
+          return 'series'
+        end
+      end
+      'movie'
     end
   end
 end

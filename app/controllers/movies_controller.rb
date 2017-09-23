@@ -10,12 +10,15 @@ class MoviesController < ApplicationController
   end
 
   def search
+    # TODO: Find out how to use some DTO mechanism (mongodb projections do exactly this, but don't seem supported in mongoid...)
     request = params['request']
     @local_movies = Movie.where(name: /#{request}/i).entries
     @imdb_movies = @ws_service.search(request)
     render json: {
       local_movies: @local_movies,
-      imdb_movies: @util_service.filter_results(@local_movies, @imdb_movies)
+      # FIXME: filter_results is broken
+      # imdb_movies: @util_service.filter_results(@local_movies, @imdb_movies)
+      imdb_movies: @imdb_movies
     }
   end
 
