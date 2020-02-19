@@ -29,7 +29,7 @@ gem 'nokogiri'
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'database_cleaner', '~> 1.6.1'
+  gem 'database_cleaner', '~> 1.8.3'
   gem 'factory_girl_rails'
   gem 'fuubar'
   gem 'rspec-rails', '~> 3.6'
